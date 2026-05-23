@@ -1,4 +1,4 @@
-package InterfaceEnumAbstractClass;
+package InterfaceEnumClass;
 
 /*
 In this file, you will learn about Enums in Java.
@@ -25,7 +25,7 @@ public class Enum {
         protected final double feeRate; // Internal constant tracking state variable
 
         // Enum constructors are private by default
-        EnumMembershipTier(double rate) { this.feeRate = rate; }
+        MembershipTier(double rate) { this.feeRate = rate; }
     }
 
     public static void main(String[] args) {

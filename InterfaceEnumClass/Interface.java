@@ -1,4 +1,4 @@
-package InterfaceEnumAbstractClass;
+package InterfaceEnumClass;
 
 /*
 In this file, you will learn about Interfaces in Java.

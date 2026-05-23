@@ -1,6 +1,7 @@
 package StreamPredicateOptionalConcepts;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -60,11 +61,16 @@ public class Optionals {
 
         /* 8. filter(Predicate<? super T> predicate) */
         Optional<String> longNameOpt = presentOpt.filter(name -> name.length() > 10);
+        Optional<String> shortNameOpt = presentOpt.filter(name -> name.length() < 10);
         System.out.println("filter result state: " + longNameOpt); // Optional.empty due to false match
+        System.out.println("filter result state: " + shortNameOpt);
 
         /* 9. map(Function<? super T, ? extends U> mapper) */
         Optional<Integer> nameLengthOpt = presentOpt.map(String::length);
+        Optional<String> nameValidOpt = Optional.of("Steven Ganteng");
+        Optional<Boolean> isValidName = nameValidOpt.map(name -> Character.isUpperCase(name.charAt(0)));
         System.out.println("map transformation payload: " + nameLengthOpt); // Optional[4]
+        System.out.println("map transformation for valid name " + nameValidOpt.get() + " is " + isValidName.get());
 
         /* 10. flatMap(Function<? super T, ? extends Optional<? extends U>> mapper) */
         Optional<String> flatMappedOpt = presentOpt.flatMap(name -> Optional.of(name.toUpperCase()));
@@ -120,6 +126,31 @@ public class Optionals {
 
         // Q2 Execution Test
         System.out.println("Q2 Fallback Pipeline Target: " + fetchSystemToken(Optional.empty(), () -> Optional.empty()));
+
+        // Q3 Execution Test
+        List<Optional<String>> networkPayloads = Arrays.asList(
+                Optional.of("PACKET_ALPHA"),
+                Optional.empty(),
+                Optional.of("PACKET_BETA"),
+                Optional.empty(),
+                Optional.of("PACKET_GAMMA")
+        );
+
+        System.out.println("Raw Input List Size: " + networkPayloads.size() + " elements (includes empty dropouts).");
+
+        List<String> sanitizedPayloads = purgeAndExtractPayloads(networkPayloads);
+
+        System.out.println("Sanitized Output List: " + sanitizedPayloads);
+        System.out.println("Sanitized List Size: " + sanitizedPayloads.size() + " (Successfully purged empty states!)");
+        // Expected Output: [PACKET_ALPHA, PACKET_BETA, PACKET_GAMMA]
+
+        // Q4 Execution Test
+
+        // Q5 Execution Test
+
+        // Q6 Execution Test
+
+        // Q7 Execution Test
     }
 
     private static String executeExpensiveOperation() {
@@ -158,7 +189,10 @@ public class Optionals {
 
     public static boolean isMessagingEnabled(Optional<UserAccount> accountOpt) {
         // TODO: Refactor using flatMap, filter, map and orElse to determine if notifications are allowed
-        return false;
+        return accountOpt.filter(acc -> !acc.getStatus().equals("Suspended"))
+                         .flatMap(UserAccount::getConfig)
+                         .map(AccountConfig::isMessagingActive)
+                         .orElse(false);
     }
 
     /* ======================================================================================================== */
@@ -170,7 +204,10 @@ public class Optionals {
 
     public static String fetchSystemToken(Optional<String> primary, java.util.function.Supplier<Optional<String>> secondary) {
         // TODO: Chain options together using Optional.or() logic and fall back to "GUEST_TOKEN" if all evaluate as empty
-        return null;
+        return primary
+                .or(secondary)
+                .or(() -> Optional.of("TERTIARY_TOKEN"))
+                .orElse("GUEST_TOKEN");
     }
 
     /* ======================================================================================================== */
@@ -181,7 +218,9 @@ public class Optionals {
 
     public static List<String> purgeAndExtractPayloads(List<Optional<String>> rawPayloads) {
         // TODO: Transform the collection using Stream + Optional::stream mechanisms
-        return null;
+        return rawPayloads.stream()
+                          .flatMap(payloads -> payloads.stream())
+                          .toList();
     }
 
     /* ======================================================================================================== */
@@ -197,6 +236,7 @@ public class Optionals {
 
     public static void processAuditRouting(Optional<String> tokenOpt, AuditEngine engine) {
         // TODO: Implement using a non-extracting conditional branching matrix method
+        tokenOpt.ifPresentOrElse(engine::recordTransactionToken, engine::soundSystemAlarm);
     }
 
     /* ======================================================================================================== */
@@ -213,7 +253,7 @@ public class Optionals {
 
     public static OrderProfile locateOrderRecord(Optional<OrderProfile> searchResult, String lookupId) {
         // TODO: Use an extraction method to return the profile or throw your custom exception with the missing ID
-        return null;
+        return searchResult.orElseThrow(() -> new OrderNotFoundException("Order registry allocation failed for ID: " + lookupId));
     }
 
     /* ======================================================================================================== */
@@ -224,7 +264,8 @@ public class Optionals {
 
     public static OptionalDouble trackPeakMetricPrimitive(double[] rawDataPoints) {
         // TODO: Process elements directly into a primitive specialized Optional numeric wrapper container
-        return null;
+        return Arrays.stream(rawDataPoints)
+                     .max();
     }
 
     /* ======================================================================================================== */
@@ -239,6 +280,8 @@ public class Optionals {
             java.util.concurrent.CompletableFuture<Optional<ClientProfile>> asyncPayload
     ) {
         // TODO: Process the future context cleanly using un-nesting transformations
-        return null;
+        return asyncPayload.thenApply(
+                client -> client.flatMap(c -> c.registrationAddress)
+                                                   .orElseThrow(() -> new IllegalStateException("Failed to extract client")));
     }
 }
