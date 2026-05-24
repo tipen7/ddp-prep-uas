@@ -1,6 +1,7 @@
 package StreamPredicateOptionalConcepts;
 
 import java.util.*;
+import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -92,7 +93,11 @@ public class Predicates {
 
     public static List<ServerInstance> extractUnstableProductionNodes(List<ServerInstance> clusterInventory) {
         // TODO: Define distinct predicates, chain them cleanly together via .and(), and filter the stream source array
-        return null;
+        Predicate<ServerInstance> prefixStartsWithUSEAST = server -> server.zoneId.startsWith("US-EAST");
+        Predicate<ServerInstance>  statusActive = server -> server.status.equalsIgnoreCase("ACTIVE");
+        Predicate<ServerInstance> metricsExceed85 = server -> server.memoryUtilizationPercent > 85;
+        Predicate<ServerInstance> unstableProductionNodes = prefixStartsWithUSEAST.and(statusActive).and(metricsExceed85);
+        return clusterInventory.stream().filter(unstableProductionNodes).toList();
     }
 
     /* ======================================================================================================== */
@@ -103,12 +108,14 @@ public class Predicates {
 
     public static void purgeEmptySpacesInline(List<String> rawLogPayloads) {
         // TODO: Use Collection.removeIf() along with a modern factory method on the Predicate interface
+        Predicate<String> isBlankEntriesOrPureWhiteSpace = s -> s.isBlank() || s.trim().isEmpty();
+        rawLogPayloads.removeIf(isBlankEntriesOrPureWhiteSpace);
     }
 
     /* ======================================================================================================== */
 
     /* Q3: You are building a secure API gateway web routing firewall checker. Incoming network requests contain a client
-    IP address string, a security security token, and a routing method type (e.g., "GET", "POST"). To protect your network,
+    IP address string, a security token, and a routing method type (e.g., "GET", "POST"). To protect your network,
     write a method that returns true if a request fails validation. A request fails validation if it originates from an
     unauthorized proxy source IP ("192.168.1.1") OR has an empty verification security token header value. Implement this
     by building out separate rules and using explicit functional negation strategies. */
@@ -117,7 +124,11 @@ public class Predicates {
 
     public static boolean detectMaliciousTraffic(WebRequest incomingPacket) {
         // TODO: Combine predicates via .or(), then call .negate() or Predicate.not() to trace the invalid inversion signature
-        return false;
+        Predicate<WebRequest> isNotValidIP = req -> req.equals("192.168.1.1");
+        Predicate<WebRequest> isValidToken = req -> !req.securityToken.isEmpty();
+        Predicate<WebRequest> isValidRequest = Predicate.not(isNotValidIP).or(isValidToken);
+
+        return isValidRequest.test(incomingPacket);
     }
 
     /* ======================================================================================================== */
@@ -134,7 +145,8 @@ public class Predicates {
             List<Predicate<OrderTransaction>> structuralRuleFilters
     ) {
         // TODO: Reduce the structuralRuleFilters list into a single compound predicate using logical chains, then run stream filtering
-        return null;
+        Predicate<OrderTransaction> combinedPredicate = structuralRuleFilters.stream().reduce(order -> false, Predicate::or);
+        return databaseEntries.stream().filter(combinedPredicate).toList();
     }
 
     /* ======================================================================================================== */
@@ -146,7 +158,9 @@ public class Predicates {
 
     public static List<String> extractExactBannedPhraseMatches(List<String> postedUserComments, String restrictedMatchPattern) {
         // TODO: Utilize Predicate.isEqual() inside a stream filter pipeline execution chain block to trap target matches
-        return null;
+        Predicate<String> isRestrictedPattern = Predicate.isEqual(restrictedMatchPattern);
+        return postedUserComments.stream().filter(isRestrictedPattern.negate()).toList();
+
     }
 
     /* ======================================================================================================== */
@@ -158,7 +172,11 @@ public class Predicates {
 
     public static boolean verifyBulkMetricsPrimitiveSafety(int[] sensorRawTimelinePoints) {
         // TODO: Use IntStream combined with a specialized non-boxing primitive evaluation predicate interface counterpart
-        return false;
+
+        IntPredicate isNotValidSensor = num -> num < 0 || num > 10_000;
+        return Arrays.stream(sensorRawTimelinePoints).anyMatch(isNotValidSensor.negate());
+
+
     }
 
     /* ======================================================================================================== */
@@ -175,6 +193,7 @@ public class Predicates {
             Predicate<CorporateStaffRecord> externalAuditorCustomQueryFilter
     ) {
         // TODO: Decorate the incoming custom filter parameter by linking a strict contractor classification exclusion check rule predicate inline
-        return null;
+    Predicate<CorporateStaffRecord> customAuditorCustomQueryFilter = staff -> !staff.roleClassificationType.equalsIgnoreCase("CONTRACTORS");
+    return externalAuditorCustomQueryFilter.and(customAuditorCustomQueryFilter);
     }
 }

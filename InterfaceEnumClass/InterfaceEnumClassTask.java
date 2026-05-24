@@ -31,6 +31,7 @@ public class InterfaceEnumClassTask {
     */
     enum ShippingTier {
         // TODO: Implement the parameterized enum values and matching fields here.
+        EXPRESS,
     }
 
     /* ======================================================================================================== */

@@ -33,6 +33,11 @@ public class ReferenceTypeAndClassConceptsQuiz {
        secondNode = new DataWrapper(100);
        System.out.println(firstNode.computationalPayload);
     */
+
+    /* Answer
+    50
+    50
+    */
     public static void trackSharedReferenceMutations() {
         // TODO: Differentiate between modifying a shared object state vs breaking a reference pointer alignment.
     }
@@ -52,6 +57,8 @@ public class ReferenceTypeAndClassConceptsQuiz {
        DataWrapper beta = new DataWrapper(2);
        modifyReferences(alpha, beta);
        System.out.println(alpha.computationalPayload + " " + beta.computationalPayload);
+
+       Answer : 44 2
     */
     public static void evaluatePassByValueReferenceSwapping() {
         // TODO: Trace parameter variable scoping boundaries and how they handle memory address manipulation.
@@ -67,6 +74,7 @@ public class ReferenceTypeAndClassConceptsQuiz {
        d2 = d3;
        d3 = null;
        // [CHECKPOINT MARKER HERE]
+       Answer : All three of them are null
     */
     public static void countGarbageCollectionReachabilityTargets() {
         // TODO: Trace the remaining active reference paths to determine object reachability.
@@ -83,7 +91,8 @@ public class ReferenceTypeAndClassConceptsQuiz {
        Execution:
        LifecycleNode n1 = new LifecycleNode();
        LifecycleNode n2 = new LifecycleNode();
-    */
+
+       Answer : StaticBlock - InstanceBlock - Constructor - InstanceBlock - Constructor    */
     public static void traceClassInitializationFlow() {
         // TODO: Determine the execution order and frequency of static vs instance blocks.
     }
@@ -94,6 +103,7 @@ public class ReferenceTypeAndClassConceptsQuiz {
        String str2 = new String("JavaExam");
        String str3 = str2.intern();
        System.out.println((str1 == str2) + " " + (str1 == str3));
+       Answer : false true
     */
     public static void analyzeStringPoolReferenceInterning() {
         // TODO: Distinguish between heap allocated object targets and central String Pool lookup indexes.
@@ -110,6 +120,7 @@ public class ReferenceTypeAndClassConceptsQuiz {
        Execution:
        UninitializedEntity ue = new UninitializedEntity();
        System.out.println(ue.count + " " + ue.reference + " " + ue.flag);
+       Answer : 0 null false
     */
     public static void verifyDefaultFieldInitialization() {
         // TODO: Contrast implicit default object field states with uninitialized local method stack variables.
@@ -121,6 +132,7 @@ public class ReferenceTypeAndClassConceptsQuiz {
        DataWrapper toxicRef = null;
        // Suppose we call a static helper method attached to the class via that reference:
        // toxicRef.executeStaticSystemRoutine();
+       Answer : NullPointerException
     */
     public static void checkNullStaticReferenceInvocation() {
         // TODO: Determine whether the JVM uses the dynamic runtime value or the static type definition to resolve static calls.
@@ -133,6 +145,7 @@ public class ReferenceTypeAndClassConceptsQuiz {
        DataWrapper wrap1 = new DataWrapper(valA);
        DataWrapper wrap2 = new DataWrapper(valB);
        System.out.println((valA == valB) + " " + (wrap1 == wrap2));
+       Answer : true false
     */
     public static void comparePrimitiveVsReferenceEquality() {
         // TODO: Contrast direct primitive value matching against heap reference location identity validation checks.
@@ -142,6 +155,7 @@ public class ReferenceTypeAndClassConceptsQuiz {
        an internal reference field pointing back to `NodeA`, can the Garbage Collector purge both objects
        if all external reference pointers to both nodes are dropped to null? */
     // TODO: Analyze how modern garbage collection tracking models handle circular reference islands.
+    // Answer : I don't know
 
     /* Q10: Review the instantiation statement profile block below and identify its compiler tracking outcome:
 
@@ -149,6 +163,8 @@ public class ReferenceTypeAndClassConceptsQuiz {
            class Inner {}
        }
        How do you correctly instantiate the `Inner` class context from an external supervisor class file?
+
+       Answer : Outer.Inner innerNode = outerNode.new Inner();
     */
     public static void evaluateInnerClassInstantiationSyntax() {
         // TODO: Identify the exact syntax required to bind an inner instance to an enclosing outer class instance.
