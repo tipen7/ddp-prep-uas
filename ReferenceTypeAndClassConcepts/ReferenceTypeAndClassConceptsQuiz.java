@@ -168,5 +168,6 @@ public class ReferenceTypeAndClassConceptsQuiz {
     */
     public static void evaluateInnerClassInstantiationSyntax() {
         // TODO: Identify the exact syntax required to bind an inner instance to an enclosing outer class instance.
+        // test
     }
 }
