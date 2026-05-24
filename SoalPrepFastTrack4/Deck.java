@@ -33,15 +33,13 @@ public class Deck {
         List<Card> temp = new ArrayList<>(this.cards);
         Collections.shuffle(temp);
         this.cards.clear();
-        for (Card card: temp) {
-            this.cards.add(card);
-        }
+        this.cards.addAll(temp);
     }
 
     /* Method to draw card (from the top) */
     public Card draw() throws EmptyDeckException {
-        
-        if (this.cards.size() == 0) {
+
+        if (this.cards.isEmpty()) {
             throw new EmptyDeckException("The deck has 0 cards");
         }
 

@@ -25,6 +25,8 @@ public class DowncastingAndUpcasting {
        Integer val3 = 128;
        Integer val4 = 128;
        System.out.println((val1 == val2) + " " + (val3 == val4));
+       Answer : true false
+
     */
     public static void checkCacheFlyweightOutput() {
         // TODO: Account for the Integer Cache mechanism bounds (-128 to 127).
@@ -36,6 +38,7 @@ public class DowncastingAndUpcasting {
        Long second = 100L;
        Long third = 200L;
        System.out.println((first + second == third) + " " + (first.equals(second)));
+       Answer : true true
     */
     public static void evaluateArithmeticUnboxing() {
         // TODO: Analyze how operators like '+' force unboxing before evaluation.
@@ -48,6 +51,7 @@ public class DowncastingAndUpcasting {
        if (rawPrimitiveValue > currentCounter) {
            System.out.println("Condition matches!");
        }
+       Answer : NullPointerException
     */
     public static void diagnoseNullUnboxingFailure() {
         // TODO: Trace the internal automatic implicit method invocation causing an NPE.
@@ -59,6 +63,7 @@ public class DowncastingAndUpcasting {
        Double valueB = 10.0;
        double primitiveA = 10.0;
        System.out.println((valueA == valueB) + " " + (valueA == primitiveA));
+       Answer : false true
     */
     public static void verifyDoubleWrapperEquality() {
         // TODO: Contrast object-to-object identity checks with object-to-primitive comparison conversions.
@@ -74,6 +79,7 @@ public class DowncastingAndUpcasting {
        processOverload(item);
        processOverload((Long)(long)item);
        What prints out on the console window?
+       Answer : primitive wrapper
     */
     public static void traceOverloadingResolutionWithWidening() {
         // TODO: Analyze compiler priority rules: Widening vs Autoboxing.
@@ -86,6 +92,7 @@ public class DowncastingAndUpcasting {
        Line 2: Long specializedRef = 42;
        Line 3: Number abstractNumRef = 42.5;
        Line 4: int primitiveExtract = (Integer) numericRef;
+       Answer : Line 2
     */
     public static void analyzeCrossAssignmentTypeRules() {
         // TODO: Remember that autoboxing will not widen an int literal straight into a Long reference.
@@ -97,6 +104,7 @@ public class DowncastingAndUpcasting {
        Boolean statusB = new Boolean(true);
        boolean statusC = true;
        System.out.println((statusA == statusB) + " " + (statusB == statusC));
+       Answer : false true
     */
     public static void checkBooleanBoxingBehaviors() {
         // TODO: Track explicit constructors vs implicit identity references.
@@ -110,6 +118,8 @@ public class DowncastingAndUpcasting {
        }
        System.out.println(grandTotal);
        What happens behind the scenes during loop iterations?
+       Answer : the output is the summation of that males ngitung, what happens during iterations is grandTotal = Integer.valueof(grandTotal.intValue() + i), each time
+       Java makes a different grandTotal Integer object
     */
     public static void gaugeLoopMemoryAllocationOverhead() {
         // TODO: Identify how many intermediate wrapper instances are created via continuous unboxing/reboxing.
@@ -120,6 +130,7 @@ public class DowncastingAndUpcasting {
        Short codeA = 5;
        Integer codeB = 5;
        System.out.println(codeA.equals(codeB) + " " + (codeA.intValue() == codeB.intValue()));
+       Answer : false true
     */
     public static void verifyCrossWrapperTypeEquals() {
         // TODO: Review the structural implementation of the `.equals()` method inside wrapper classes.
@@ -131,6 +142,7 @@ public class DowncastingAndUpcasting {
        Expression B: Integer intObj = 'A';
        Expression C: Float floatObj = 10.5;
        Expression D: Byte byteObj = 128;
+       Answer : Expression B
     */
     public static void parseLiteralBindingRules() {
         // TODO: Determine which primitive promotions are legally captured via modern boxing assignments.

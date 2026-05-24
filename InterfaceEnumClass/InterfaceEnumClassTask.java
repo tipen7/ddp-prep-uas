@@ -31,7 +31,18 @@ public class InterfaceEnumClassTask {
     */
     enum ShippingTier {
         // TODO: Implement the parameterized enum values and matching fields here.
-        EXPRESS,
+        EXPRESS(1.0),
+        STANDARD(2.0),
+        INTERNATIONAL(5.0);
+
+        private final double baseRateMultiplier;
+        ShippingTier(double baseRateMultiplier) {
+            this.baseRateMultiplier = baseRateMultiplier;
+        }
+
+        public double getBaseRateMultiplier() {
+            return baseRateMultiplier;
+        }
     }
 
     /* ======================================================================================================== */
@@ -44,6 +55,7 @@ public class InterfaceEnumClassTask {
     */
     interface ShippingProcessor {
         // TODO: Define the abstract behavioral contract layout here.
+        double calculateCost(double packageValue);
     }
 
     /* ======================================================================================================== */
@@ -54,12 +66,29 @@ public class InterfaceEnumClassTask {
        - Class 1: StandardShipping implements ShippingProcessor -> Costs = packageValue * 0.05
        - Class 2: ExpressShipping implements ShippingProcessor -> Costs = (packageValue * 0.12) + 15.00
     */
-    static class StandardShipping {
+    static class StandardShipping implements ShippingProcessor {
         // TODO: Implement your interface contract here.
+        private double costs;
+        public StandardShipping(double costs) {
+            this.costs = costs;
+        }
+
+        @Override
+        public double calculateCost(double packageValue) {
+            return packageValue * 0.05;
+        }
     }
 
-    static class ExpressShipping {
+    static class ExpressShipping implements ShippingProcessor {
         // TODO: Implement your interface contract here.
+        private double costs;
+        public ExpressShipping(double costs) {
+            this.costs = costs;
+        }
+        @Override
+        public double calculateCost(double packageValue) {
+            return (packageValue * 0.12) + 15.00;
+        }
     }
 
     /* ======================================================================================================== */

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/DAGINGINIH/DAGINGINIH.iml" filepath="$PROJECT_DIR$/DAGINGINIH/DAGINGINIH.iml" />
       <module fileurl="file://$PROJECT_DIR$/DDPUAS.iml" filepath="$PROJECT_DIR$/DDPUAS.iml" />
     </modules>
   </component>

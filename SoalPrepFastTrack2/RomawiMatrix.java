@@ -30,14 +30,11 @@ public class RomawiMatrix<T> {
         for (int i = 0; i < matrix1RowSize; i++) {
             for (int j = 0; j < matrix2ColumnSize; j++) {
                 for (int k = 0; k < matrix1ColumnSize; k++) {
-
                     try {
                         result[i][j] += this.rome.getNumericValue((String) this.romeMatrix1.get(i).get(k)) * this.rome.getNumericValue((String)this.romeMatrix2.get(k).get(j));
                     } catch (InvalidRomeNumberException e) {
                         throw e;
                     }
-                    
-
                 }
             }
         }
